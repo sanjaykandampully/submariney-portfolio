@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#0b0d10">
+<title>Submariney Portfolio</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2312161c'/%3E%3Cpath d='M7 19c3-5 15-5 18 0-3 3-15 3-18 0z' fill='%233ecf8e'/%3E%3Crect x='14' y='9' width='4' height='7' rx='1.5' fill='%233ecf8e'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#0b0d10; --panel:#12161c; --panel2:#171c23; --line:#1f252e; --line2:#2a313c;
+  --text:#e7eaee; --muted:#8b95a4; --dim:#5d6676;
+  --up:#3ecf8e; --down:#f2646f; --accent:#7aa2ff; --warn:#e8b04b;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font:14px/1.45 -apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+.num{font-variant-numeric:tabular-nums}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 18px 60px}
+.hide{display:none!important}
+.up{color:var(--up)} .down{color:var(--down)} .muted{color:var(--muted)} .dim{color:var(--dim)}
+
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;letter-spacing:.2px}
+.logo{width:28px;height:28px;border-radius:8px;background:var(--panel);display:grid;place-items:center;border:1px solid var(--line)}
+.top-right{display:flex;align-items:center;gap:8px}
+.btn{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;transition:background .15s,border-color .15s}
+.btn:hover{background:var(--panel2);border-color:var(--line2)}
+.btn.primary{background:var(--text);color:#0b0d10;border-color:var(--text);font-weight:600}
+.btn.primary:hover{background:#fff}
+.btn.danger{color:var(--down)}
+.btn.small{padding:5px 9px;font-size:12.5px;border-radius:8px}
+.icon-btn{background:none;border:1px solid transparent;border-radius:8px;padding:4px 6px;color:var(--muted)}
+.icon-btn:hover{color:var(--text);background:var(--panel2)}
+
+/* nav */
+.nav{display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--line)}
+.nav a{padding:10px 12px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+.nav a.on{color:var(--text);border-color:var(--text)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.stat .k{color:var(--muted);font-size:12.5px;margin-bottom:6px}
+.stat .v{font-size:22px;font-weight:600;letter-spacing:-.3px}
+.stat .s{font-size:12.5px;margin-top:3px}
+.stat .coinline{display:flex;align-items:center;gap:8px}
+.stat .coinline img{width:22px;height:22px;border-radius:50%}
+
+/* table */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.chips{display:flex;gap:6px}
+.chip{background:none;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--muted);font-size:13px}
+.chip.on{color:var(--text);border-color:var(--line2);background:var(--panel)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{font-size:12px;font-weight:500;color:var(--muted);text-align:right;padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{text-align:right;padding:12px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+tr:last-child td{border-bottom:none}
+tbody tr.row{cursor:pointer;transition:background .12s}
+tbody tr.row:hover{background:var(--panel2)}
+.coin{display:flex;align-items:center;gap:10px}
+.coin img{width:26px;height:26px;border-radius:50%;background:var(--panel2);flex:none}
+.coin .n{font-weight:500}
+.coin .sym{color:var(--muted);font-size:12px}
+.sub{display:block;color:var(--muted);font-size:12px}
+.tag{display:inline-block;font-size:10.5px;padding:1px 6px;border-radius:6px;border:1px solid var(--line2);color:var(--muted);margin-left:6px;vertical-align:1px}
+.closed td{opacity:.62}
+.show-sm{display:none}
+
+/* coin detail */
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--muted);margin-bottom:16px}
+.back:hover{color:var(--text)}
+.dhead{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.dhead img{width:40px;height:40px;border-radius:50%}
+.dhead h1{font-size:22px;margin:0;font-weight:600}
+.dhead .px{font-size:15px;margin-left:auto;text-align:right}
+.stats.five{grid-template-columns:repeat(5,1fr)}
+
+/* transactions */
+.txs{display:flex;flex-direction:column}
+.tx{display:grid;grid-template-columns:110px 1fr 1fr 1fr auto;gap:14px;padding:14px 16px;border-bottom:1px solid var(--line);align-items:start}
+.tx:last-child{border-bottom:none}
+.tx .t{font-weight:600;font-size:13px}
+.pill{display:inline-block;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600}
+.pill.buy{background:rgba(62,207,142,.12);color:var(--up)}
+.pill.sell{background:rgba(242,100,111,.12);color:var(--down)}
+.pill.transfer_in{background:rgba(122,162,255,.12);color:var(--accent)}
+.pill.transfer_out{background:rgba(232,176,75,.12);color:var(--warn)}
+.tx .lbl{font-size:11.5px;color:var(--dim);display:block}
+.tx .note{grid-column:1/-1;color:#c3c9d2;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;white-space:pre-wrap;word-break:break-word;margin-top:-4px}
+.tx .acts{display:flex;gap:2px}
+.tx.withcoin{grid-template-columns:190px 1fr 1fr 1fr auto}
+.month{padding:10px 16px;font-size:12px;color:var(--muted);background:var(--bg);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:1}
+.search{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 12px;min-width:220px;outline:none}
+.search:focus{border-color:var(--line2)}
+
+/* footer */
+.foot{margin-top:26px;display:flex;justify-content:space-between;gap:10px;color:var(--dim);font-size:12px;flex-wrap:wrap}
+.foot button{background:none;border:none;color:var(--dim);padding:0}
+.foot button:hover{color:var(--muted)}
+
+/* lock */
+.lock{min-height:100vh;display:grid;place-items:center;padding:20px}
+.lockbox{width:100%;max-width:360px;text-align:center}
+.lockbox .logo{width:52px;height:52px;border-radius:14px;margin:0 auto 18px}
+.lockbox h1{font-size:20px;margin:0 0 6px;font-weight:600}
+.lockbox p{color:var(--muted);margin:0 0 22px}
+.field{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;outline:none;margin-bottom:10px}
+.field:focus{border-color:var(--line2)}
+.err{color:var(--down);font-size:13px;min-height:20px;margin-top:6px}
+.check{display:flex;align-items:center;gap:8px;justify-content:center;color:var(--muted);font-size:13px;margin:4px 0 14px}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:grid;place-items:center;padding:16px;z-index:50;backdrop-filter:blur(3px)}
+.mbox{background:var(--panel);border:1px solid var(--line2);border-radius:16px;width:100%;max-width:480px;max-height:92vh;overflow:auto;padding:20px}
+.mbox h2{margin:0 0 4px;font-size:17px;font-weight:600}
+.mbox .hint{color:var(--muted);font-size:13px;margin:0 0 16px}
+.mbox label{display:block;font-size:12.5px;color:var(--muted);margin:12px 0 5px}
+.mbox .field{margin:0}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:4px}
+.seg button{background:none;border:none;border-radius:9px;padding:8px 4px;color:var(--muted);font-size:13px}
+.seg button.on{background:var(--panel2);color:var(--text)}
+.mact{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+.results{margin-top:6px;border:1px solid var(--line);border-radius:10px;max-height:220px;overflow:auto}
+.results div{display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--line)}
+.results div:last-child{border-bottom:none}
+.results div:hover{background:var(--panel2)}
+.results img{width:20px;height:20px;border-radius:50%}
+.calc{margin-top:10px;font-size:13px;color:var(--muted)}
+.steps{color:#c3c9d2;font-size:13.5px;padding-left:18px;margin:0}
+.steps li{margin-bottom:6px}
+.adminbar{display:flex;align-items:center;gap:8px;background:rgba(122,162,255,.08);border:1px solid rgba(122,162,255,.25);color:#c7d6ff;border-radius:12px;padding:8px 12px;margin-bottom:18px;font-size:13px;flex-wrap:wrap}
+.adminbar .sp{flex:1}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--text);color:#0b0d10;padding:10px 16px;border-radius:12px;font-weight:500;z-index:60;max-width:92vw;text-align:center}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--line2);border-top-color:var(--text);border-radius:50%;animation:sp 0.8s linear infinite;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+@media (max-width:820px){
+  .stats,.stats.five{grid-template-columns:1fr 1fr}
+  .hide-sm{display:none}
+  .show-sm{display:inline}
+  th,td{padding:11px 10px}
+  .tx,.tx.withcoin{grid-template-columns:1fr 1fr;gap:8px 12px}
+  .tx .acts{grid-column:2;justify-self:end;grid-row:1}
+  .search{min-width:0;flex:1}
+  .dhead .px{margin-left:0;text-align:left;width:100%}
+}
+@media (max-width:420px){
+  .stat .v{font-size:18px}
+  .wrap{padding:16px 12px 50px}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ---------- Settings ---------- */
+const CONFIG = {
+  owner: 'sanjaykandampully',
+  repo: 'submariney-portfolio',
+  branch: 'main',
+  path: 'data.enc.json',
+  title: 'Submariney Portfolio'
+};
+const PRICE_TTL = 60 * 1000;
+
+/* ---------- State ---------- */
+let DATA = null, KEY = null, FILE = null, MARKET = {}, MARKET_AT = 0, VIEW = {filter:'all', q:''};
+const LS = {
+  get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem(k,v); } catch(e){} },
+  del(k){ try { localStorage.removeItem(k); } catch(e){} }
+};
+const isAdmin = () => !!LS.get('sp_admin_token');
+
+/* ---------- Helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const te = new TextEncoder(), td = new TextDecoder();
+function b64(buf){ const b = new Uint8Array(buf); let s=''; for (let i=0;i<b.length;i+=0x8000) s += String.fromCharCode.apply(null, b.subarray(i,i+0x8000)); return btoa(s); }
+function unb64(s){ const bin = atob(s); const b = new Uint8Array(bin.length); for (let i=0;i<bin.length;i++) b[i]=bin.charCodeAt(i); return b; }
+const utf8b64 = str => b64(te.encode(str));
+
+function fmtMoney(v, signed){
+  if (v == null || isNaN(v)) return '-';
+  const a = Math.abs(v);
+  const s = (a > 0 && a < 0.01) ? '<$0.01' : '$' + a.toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2});
+  if (v < 0 && a >= 0.005) return '-' + s;
+  return (signed && a >= 0.005 ? '+' : '') + s;
+}
+function fmtPrice(v){
+  if (v == null || isNaN(v)) return '-';
+  const a = Math.abs(v);
+  if (a >= 1) return (v<0?'-':'') + '$' + a.toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2});
+  if (a === 0) return '$0.00';
+  const d = Math.min(12, Math.max(2, -Math.floor(Math.log10(a)) + 3));
+  return (v<0?'-':'') + '$' + a.toFixed(d).replace(/0+$/,'').replace(/\.$/,'');
+}
+function fmtQty(v){
+  if (v == null || isNaN(v)) return '-';
+  if (Math.abs(v) < 1e-9) return '0';
+  return v.toLocaleString('en-US',{maximumFractionDigits: Math.abs(v) < 1 ? 8 : 6});
+}
+function fmtPct(v, signed=true){
+  if (v == null || isNaN(v) || !isFinite(v)) return '-';
+  return (signed && v > 0 ? '+' : '') + v.toFixed(Math.abs(v) >= 1000 ? 0 : 1) + '%';
+}
+const cls = v => v > 0.0000001 ? 'up' : (v < -0.0000001 ? 'down' : 'muted');
+function fmtDate(ts){
+  return new Date(ts).toLocaleString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'2-digit',hour12:true}).replace(' am',' AM').replace(' pm',' PM');
+}
+const TYPE_LABEL = {buy:'Buy', sell:'Sell', transfer_in:'Transfer in', transfer_out:'Transfer out'};
+function toast(msg, ms=3200){ const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(), ms); }
+function localInputValue(d){ const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }
+
+/* ---------- Encryption (AES-GCM 256, key from passcode via PBKDF2-SHA256) ---------- */
+async function deriveKey(pass, saltB64, iter){
+  const base = await crypto.subtle.importKey('raw', te.encode(pass), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2', salt: unb64(saltB64), iterations: iter, hash:'SHA-256'}, base, {name:'AES-GCM', length:256}, true, ['encrypt','decrypt']);
+}
+async function decryptWith(key, file){
+  const pt = await crypto.subtle.decrypt({name:'AES-GCM', iv: unb64(file.iv)}, key, unb64(file.ct));
+  return JSON.parse(td.decode(pt));
+}
+async function encryptWith(key, salt, iter, obj){
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, te.encode(JSON.stringify(obj)));
+  return {v:1, kdf:'PBKDF2-SHA256', iter, salt, iv: b64(iv), ct: b64(ct)};
+}
+async function rememberKey(key, salt){
+  const raw = await crypto.subtle.exportKey('raw', key);
+  LS.set('sp_key', JSON.stringify({salt, k: b64(raw)}));
+}
+async function storedKey(salt){
+  try {
+    const s = JSON.parse(LS.get('sp_key') || 'null');
+    if (!s || s.salt !== salt) return null;
+    return await crypto.subtle.importKey('raw', unb64(s.k), {name:'AES-GCM'}, true, ['encrypt','decrypt']);
+  } catch(e){ return null; }
+}
+
+/* ---------- Data file ---------- */
+const apiBase = () => `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}`;
+async function fetchFile(){
+  const tok = LS.get('sp_admin_token');
+  try {
+    const h = {Accept:'application/vnd.github.raw+json'};
+    if (tok) h.Authorization = 'Bearer ' + tok;
+    const r = await fetch(`${apiBase()}?ref=${CONFIG.branch}&t=${Date.now()}`, {headers:h, cache:'no-store'});
+    if (r.ok) return await r.json();
+  } catch(e){}
+  const r = await fetch(`${CONFIG.path}?t=${Date.now()}`, {cache:'no-store'});
+  if (!r.ok) throw new Error('Could not load portfolio data');
+  return await r.json();
+}
+
+/* ---------- Prices ---------- */
+async function loadPrices(force){
+  try {
+    const c = JSON.parse(LS.get('sp_px') || 'null');
+    if (c) { MARKET = c.d; MARKET_AT = c.t; }
+    if (!force && c && Date.now() - c.t < PRICE_TTL) return;
+  } catch(e){}
+  const ids = [...new Set(Object.values(DATA.coins).map(c => c.apiId).filter(Boolean))];
+  if (!ids.length) return;
+  try {
+    const out = {};
+    for (let i=0; i<ids.length; i+=200){
+      const r = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${ids.slice(i,i+200).join(',')}&price_change_percentage=1h,24h,7d&per_page=250`);
+      if (!r.ok) throw new Error('prices ' + r.status);
+      for (const m of await r.json()) out[m.id] = {p:m.current_price, h1:m.price_change_percentage_1h_in_currency, h24:m.price_change_percentage_24h_in_currency, d7:m.price_change_percentage_7d_in_currency, img:m.image};
+    }
+    MARKET = out; MARKET_AT = Date.now();
+    LS.set('sp_px', JSON.stringify({t:MARKET_AT, d:MARKET}));
+  } catch(e){ console.warn('Price update failed, using last known prices', e); }
+}
+
+/* ---------- Calculations (same method as CoinGecko) ---------- */
+function compute(){
+  const rows = {};
+  for (const [slug, c] of Object.entries(DATA.coins)) {
+    rows[slug] = {slug, c, qty:0, cost:0, proceeds:0, buyQty:0, buyCost:0, txs:[]};
+  }
+  for (const t of DATA.transactions) {
+    const r = rows[t.coin]; if (!r) continue;
+    r.txs.push(t);
+    if (t.type === 'buy' || t.type === 'transfer_in') r.qty += t.quantity; else r.qty -= t.quantity;
+    r.cost += t.cost || 0; r.proceeds += t.proceeds || 0;
+    if (t.type === 'buy') { r.buyQty += t.quantity; r.buyCost += t.cost || 0; }
+  }
+  let value=0, cost=0, pnl=0, ch24=0;
+  for (const r of Object.values(rows)) {
+    if (Math.abs(r.qty) < 1e-9) r.qty = 0;
+    const m = r.c.apiId ? MARKET[r.c.apiId] : null;
+    r.live = !!(m && m.p != null);
+    r.price = r.live ? m.p : r.c.lastPrice;
+    r.h1 = m?.h1; r.h24 = m?.h24; r.d7 = m?.d7;
+    r.value = r.qty * (r.price || 0);
+    r.pnl = r.value + r.proceeds - r.cost;
+    r.pnlPct = r.cost > 0 ? r.pnl / r.cost * 100 : null;
+    r.avgNet = r.qty > 0 ? (r.cost - r.proceeds) / r.qty : null;
+    r.avgBuy = r.buyQty > 0 ? r.buyCost / r.buyQty : null;
+    r.ch24 = (r.h24 != null) ? r.value * (r.h24 / (100 + r.h24)) : 0;
+    r.txs.sort((a,b) => b.timestamp.localeCompare(a.timestamp));
+    value += r.value; cost += r.cost; pnl += r.pnl; ch24 += r.ch24;
+  }
+  const list = Object.values(rows).filter(r => r.txs.length);
+  list.sort((a,b) => (b.value - a.value) || (b.pnl - a.pnl));
+  const top = [...list].sort((a,b) => b.pnl - a.pnl)[0];
+  return {rows, list, value, cost, pnl, pnlPct: cost ? pnl/cost*100 : 0, ch24, ch24Pct: (value - ch24) ? ch24/(value - ch24)*100 : 0, top};
+}
+
+/* ---------- Rendering ---------- */
+const coinImg = c => `<img src="${esc(c.image)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`;
+
+function shell(inner){
+  const updated = DATA.updatedAt ? fmtDate(DATA.updatedAt) : '';
+  const pxTime = MARKET_AT ? new Date(MARKET_AT).toLocaleTimeString('en-GB',{hour:'numeric',minute:'2-digit',hour12:true}).toUpperCase() : 'loading';
+  const r = location.hash || '#/';
+  return `
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="#/"><span class="logo"><svg width="18" height="18" viewBox="0 0 32 32"><path d="M5 19c3.5-6 18.5-6 22 0-3.5 3.5-18.5 3.5-22 0z" fill="#3ecf8e"/><rect x="14" y="8" width="4" height="8" rx="1.5" fill="#3ecf8e"/></svg></span>${esc(DATA.name || CONFIG.title)}</a>
+      <div class="top-right">
+        <button class="btn small" id="refresh" title="Refresh prices">↻ Prices</button>
+      </div>
+    </div>
+    ${isAdmin() ? `<div class="adminbar"><b>Manage mode</b><span class="sp">Changes save to the shared link.</span>
+      <button class="btn small primary" data-act="add">+ Add transaction</button>
+      <button class="btn small" data-act="settings">Settings</button></div>` : ''}
+    <div class="nav">
+      <a href="#/" class="${r==='#/'||r===''?'on':''}">Overview</a>
+      <a href="#/activity" class="${r.startsWith('#/activity')?'on':''}">All transactions</a>
+    </div>
+    ${inner}
+    <div class="foot">
+      <span>${Object.keys(MARKET).length ? `Prices from CoinGecko, updated ${esc(pxTime)}` : 'Live prices unavailable right now, showing last saved prices'} · Portfolio updated ${esc(updated)}</span>
+      <span><button data-act="lock">Lock</button> · <button data-act="manage">${isAdmin() ? 'Exit manage mode' : 'Manage'}</button></span>
+    </div>
+  </div>`;
+}
+
+function renderOverview(S){
+  const f = VIEW.filter;
+  const list = S.list.filter(r => f==='all' ? true : f==='holding' ? r.qty > 0 : r.qty === 0);
+  const top = S.top;
+  return shell(`
+    <div class="stats">
+      <div class="stat"><div class="k">Current balance</div><div class="v num">${fmtMoney(S.value)}</div>
+        <div class="s num ${cls(S.ch24)}">${fmtMoney(S.ch24,true)} (${fmtPct(S.ch24Pct)}) 24h</div></div>
+      <div class="stat"><div class="k">Total profit / loss</div><div class="v num ${cls(S.pnl)}">${fmtMoney(S.pnl,true)}</div>
+        <div class="s num ${cls(S.pnl)}">${fmtPct(S.pnlPct)}</div></div>
+      <div class="stat"><div class="k">Total invested</div><div class="v num">${fmtMoney(S.cost)}</div>
+        <div class="s muted">${DATA.transactions.length} transactions</div></div>
+      <div class="stat"><div class="k">Top performer (all time)</div>
+        ${top ? `<div class="v coinline">${coinImg(top.c)}<span>${esc(top.c.symbol)}</span></div><div class="s num ${cls(top.pnl)}">${fmtMoney(top.pnl,true)}</div>` : '-'}</div>
+    </div>
+    <div class="bar">
+      <div class="chips">
+        <button class="chip ${f==='all'?'on':''}" data-filter="all">All (${S.list.length})</button>
+        <button class="chip ${f==='holding'?'on':''}" data-filter="holding">Holding (${S.list.filter(r=>r.qty>0).length})</button>
+        <button class="chip ${f==='closed'?'on':''}" data-filter="closed">Sold out (${S.list.filter(r=>r.qty===0).length})</button>
+      </div>
+    </div>
+    <div class="card"><table>
+      <thead><tr><th>Coin</th><th class="hide-sm">Price</th><th class="hide-sm">1h</th><th>24h</th><th class="hide-sm">7d</th><th>Holdings</th><th>Profit / loss</th></tr></thead>
+      <tbody>
+      ${list.map(r => `
+        <tr class="row ${r.qty===0?'closed':''}" data-coin="${esc(r.slug)}">
+          <td><div class="coin">${coinImg(r.c)}<div><span class="n">${esc(r.c.name)}</span>${!r.c.apiId?'<span class="tag">Inactive</span>':''}<span class="sym sub">${esc(r.c.symbol)}<span class="show-sm"> · ${fmtPrice(r.price)}</span></span></div></div></td>
+          <td class="num hide-sm">${fmtPrice(r.price)}</td>
+          <td class="num hide-sm ${cls(r.h1)}">${fmtPct(r.h1)}</td>
+          <td class="num ${cls(r.h24)}">${fmtPct(r.h24)}</td>
+          <td class="num hide-sm ${cls(r.d7)}">${fmtPct(r.d7)}</td>
+          <td class="num">${fmtMoney(r.value)}<span class="sub">${fmtQty(r.qty)} ${esc(r.c.symbol)}</span></td>
+          <td class="num ${cls(r.pnl)}">${fmtMoney(r.pnl,true)}<span class="sub ${cls(r.pnl)}">${fmtPct(r.pnlPct)}</span></td>
+        </tr>`).join('')}
+      </tbody></table></div>`);
+}
+
+function txRow(t, withCoin){
+  const c = DATA.coins[t.coin] || {};
+  const isTrade = t.type === 'buy' || t.type === 'sell';
+  const sign = (t.type==='buy'||t.type==='transfer_in') ? '+' : '-';
+  const amount = t.type==='buy' ? `<span class="lbl">Cost</span>${fmtMoney(t.cost)}` :
+                 t.type==='sell' ? `<span class="lbl">Proceeds</span>${fmtMoney(t.proceeds)}` :
+                 `<span class="lbl">Value</span><span class="dim">-</span>`;
+  return `<div class="tx ${withCoin?'withcoin':''}">
+    <div>${withCoin ? `<a class="coin" href="#/coin/${esc(t.coin)}">${coinImg(c)}<div><span class="n">${esc(c.name)}</span><span class="sub"><span class="pill ${t.type}">${TYPE_LABEL[t.type]}</span></span></div></a>`
+                    : `<span class="pill ${t.type}">${TYPE_LABEL[t.type]}</span>`}</div>
+    <div class="num"><span class="lbl">Quantity</span>${sign}${fmtQty(t.quantity)} ${esc(c.symbol||'')}</div>
+    <div class="num"><span class="lbl">Price${t.fees ? ' · fees ' + fmtMoney(t.fees) : ''}</span>${isTrade ? fmtPrice(t.price) : '<span class="dim">-</span>'}</div>
+    <div class="num">${amount}</div>
+    <div class="num" style="text-align:right"><span class="lbl">Date</span>${esc(fmtDate(t.timestamp))}
+      ${isAdmin() ? `<div class="acts" style="justify-content:flex-end;margin-top:4px"><button class="icon-btn" title="Edit" data-edit="${esc(t.id)}">Edit</button><button class="icon-btn" title="Delete" data-del="${esc(t.id)}">Delete</button></div>` : ''}</div>
+    ${t.notes ? `<div class="note">${esc(t.notes)}</div>` : ''}
+  </div>`;
+}
+
+function renderCoin(S, slug){
+  const r = S.rows[slug];
+  if (!r) return shell(`<a class="back" href="#/">← Back</a><p class="muted">Coin not found.</p>`);
+  return shell(`
+    <a class="back" href="#/">← All coins</a>
+    <div class="dhead">${coinImg(r.c)}<div><h1>${esc(r.c.name)} <span class="muted" style="font-weight:400;font-size:16px">${esc(r.c.symbol)}</span>${!r.c.apiId?'<span class="tag">Inactive</span>':''}</h1></div>
+      <div class="px num"><div style="font-size:20px;font-weight:600">${fmtPrice(r.price)}</div><div class="${cls(r.h24)}">${fmtPct(r.h24)} 24h</div></div></div>
+    <div class="stats five">
+      <div class="stat"><div class="k">Holdings value</div><div class="v num">${fmtMoney(r.value)}</div><div class="s muted num">${fmtQty(r.qty)} ${esc(r.c.symbol)}</div></div>
+      <div class="stat"><div class="k">Total cost</div><div class="v num">${fmtMoney(r.cost)}</div><div class="s muted num">Proceeds ${fmtMoney(r.proceeds)}</div></div>
+      <div class="stat"><div class="k">Average buy price</div><div class="v num">${fmtPrice(r.avgBuy)}</div><div class="s muted">across all buys</div></div>
+      <div class="stat"><div class="k">Average net cost</div><div class="v num">${r.avgNet==null?'-':fmtPrice(r.avgNet)}</div><div class="s muted">after sales</div></div>
+      <div class="stat"><div class="k">Profit / loss</div><div class="v num ${cls(r.pnl)}">${fmtMoney(r.pnl,true)}</div><div class="s num ${cls(r.pnl)}">${fmtPct(r.pnlPct)}</div></div>
+    </div>
+    <div class="bar"><b>Transactions (${r.txs.length})</b>${isAdmin()?`<button class="btn small primary" data-act="add" data-coin="${esc(slug)}">+ Add ${esc(r.c.symbol)} transaction</button>`:''}</div>
+    <div class="card txs">${r.txs.map(t => txRow(t,false)).join('')}</div>`);
+}
+
+function renderActivity(){
+  const q = VIEW.q.trim().toLowerCase();
+  const txs = [...DATA.transactions].sort((a,b) => b.timestamp.localeCompare(a.timestamp)).filter(t => {
+    if (!q) return true; const c = DATA.coins[t.coin] || {};
+    return [c.name, c.symbol, t.notes, TYPE_LABEL[t.type]].join(' ').toLowerCase().includes(q);
+  });
+  let html = '', month = '';
+  for (const t of txs) {
+    const m = new Date(t.timestamp).toLocaleString('en-GB',{month:'long', year:'numeric'});
+    if (m !== month) { month = m; html += `<div class="month">${esc(m)}</div>`; }
+    html += txRow(t, true);
+  }
+  return shell(`
+    <div class="bar"><b>All transactions (${txs.length})</b><input class="search" id="q" placeholder="Search coin or notes" value="${esc(VIEW.q)}"></div>
+    <div class="card txs">${html || '<div class="tx"><span class="muted">Nothing matches.</span></div>'}</div>`);
+}
+
+function render(){
+  if (!DATA) return;
+  const S = compute();
+  const h = location.hash || '#/';
+  let html;
+  if (h.startsWith('#/coin/')) html = renderCoin(S, decodeURIComponent(h.slice(7)));
+  else if (h.startsWith('#/activity')) html = renderActivity();
+  else html = renderOverview(S);
+  const keepFocus = document.activeElement && document.activeElement.id === 'q';
+  const pos = keepFocus ? document.activeElement.selectionStart : null;
+  $('#app').innerHTML = html;
+  if (keepFocus) { const el = $('#q'); if (el) { el.focus(); el.setSelectionRange(pos,pos); } }
+}
+
+/* ---------- Lock screen ---------- */
+function renderLock(msg){
+  $('#app').innerHTML = `<div class="lock"><form class="lockbox" id="lockform">
+    <div class="logo"><svg width="28" height="28" viewBox="0 0 32 32"><path d="M5 19c3.5-6 18.5-6 22 0-3.5 3.5-18.5 3.5-22 0z" fill="#3ecf8e"/><rect x="14" y="8" width="4" height="8" rx="1.5" fill="#3ecf8e"/></svg></div>
+    <h1>${esc(CONFIG.title)}</h1><p>Enter the passcode to view.</p>
+    <input class="field" id="pass" type="password" autocomplete="current-password" placeholder="Passcode" autofocus>
+    <label class="check"><input type="checkbox" id="remember" checked> Remember on this device</label>
+    <button class="btn primary" style="width:100%;padding:12px" id="unlockbtn">Unlock</button>
+    <div class="err" id="err">${esc(msg||'')}</div></form></div>`;
+  $('#lockform').onsubmit = async e => {
+    e.preventDefault();
+    const pass = $('#pass').value; if (!pass) return;
+    $('#unlockbtn').innerHTML = '<span class="spin"></span>'; $('#err').textContent = '';
+    try {
+      const key = await deriveKey(pass, FILE.salt, FILE.iter);
+      DATA = await decryptWith(key, FILE); KEY = key;
+      if ($('#remember').checked) await rememberKey(key, FILE.salt);
+      start();
+    } catch(err) { $('#unlockbtn').textContent = 'Unlock'; $('#err').textContent = 'That passcode is not right.'; }
+  };
+}
+
+/* ---------- Manage (admin) ---------- */
+function modal(html){
+  closeModal();
+  const m = document.createElement('div'); m.className='modal'; m.id='modal';
+  m.innerHTML = `<div class="mbox">${html}</div>`;
+  m.addEventListener('mousedown', e => { if (e.target === m) closeModal(); });
+  document.body.appendChild(m);
+  return m;
+}
+function closeModal(){ $('#modal')?.remove(); }
+function confirmBox(title, text, okLabel){
+  return new Promise(res => {
+    const m = modal(`<h2>${esc(title)}</h2><p class="hint">${esc(text)}</p><div class="mact"><button class="btn" id="cn">Cancel</button><button class="btn primary" id="ok">${esc(okLabel||'OK')}</button></div>`);
+    m.querySelector('#cn').onclick = () => { closeModal(); res(false); };
+    m.querySelector('#ok').onclick = () => { closeModal(); res(true); };
+  });
+}
+
+function openManageSetup(){
+  const m = modal(`<h2>Manage this portfolio</h2>
+    <p class="hint">For Sanjay only. This device needs a GitHub key once, then you can add, edit and delete transactions here.</p>
+    <ol class="steps">
+      <li>Open <a class="up" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub › New fine-grained token</a> (signed in as ${esc(CONFIG.owner)}).</li>
+      <li>Name it "Submariney", set expiry to 1 year (or "No expiration").</li>
+      <li>Repository access: <b>Only select repositories</b> › <b>${esc(CONFIG.repo)}</b>.</li>
+      <li>Permissions › Repository permissions › <b>Contents: Read and write</b>.</li>
+      <li>Generate, copy it, and paste it below.</li>
+    </ol>
+    <label>GitHub key</label><input class="field" id="tok" type="password" placeholder="github_pat_..." autocomplete="off">
+    <div class="err" id="terr"></div>
+    <div class="mact"><button class="btn" id="cn">Cancel</button><button class="btn primary" id="ok">Connect</button></div>`);
+  m.querySelector('#cn').onclick = closeModal;
+  m.querySelector('#ok').onclick = async () => {
+    const tok = m.querySelector('#tok').value.trim(); if (!tok) return;
+    m.querySelector('#ok').innerHTML = '<span class="spin"></span>';
+    try {
+      const r = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}`, {headers:{Authorization:'Bearer '+tok, Accept:'application/vnd.github+json'}});
+      const j = await r.json();
+      if (!r.ok || !j.permissions || !j.permissions.push) throw new Error(r.ok ? 'This key cannot save changes. Check "Contents: Read and write".' : 'GitHub did not accept this key.');
+      LS.set('sp_admin_token', tok); closeModal(); render(); toast('Manage mode is on for this device.');
+    } catch(e){ m.querySelector('#ok').textContent = 'Connect'; m.querySelector('#terr').textContent = e.message; }
+  };
+}
+
+async function saveData(newData, message){
+  const tok = LS.get('sp_admin_token');
+  if (!tok) throw new Error('Manage mode is not set up on this device.');
+  for (const c of Object.values(newData.coins)) {
+    const m = c.apiId && MARKET[c.apiId];
+    if (m && m.p != null) { c.lastPrice = m.p; c.lastPriceAt = new Date(MARKET_AT).toISOString(); }
+  }
+  newData.updatedAt = new Date().toISOString();
+  const encObj = await encryptWith(KEY, FILE.salt, FILE.iter, newData);
+  const h = {Authorization:'Bearer '+tok, Accept:'application/vnd.github+json'};
+  const cur = await fetch(`${apiBase()}?ref=${CONFIG.branch}&t=${Date.now()}`, {headers:h, cache:'no-store'});
+  if (!cur.ok) throw new Error('Could not reach GitHub (' + cur.status + ').');
+  const {sha} = await cur.json();
+  const put = await fetch(apiBase(), {method:'PUT', headers:{...h,'Content-Type':'application/json'},
+    body: JSON.stringify({message, content: utf8b64(JSON.stringify(encObj)), sha, branch: CONFIG.branch})});
+  if (!put.ok) { const j = await put.json().catch(()=>({})); throw new Error('Save failed: ' + (j.message || put.status)); }
+  DATA = newData; FILE = encObj;
+  render();
+}
+
+function txForm(existing, presetCoin){
+  const t = existing || {type:'buy', coin: presetCoin || '', quantity:'', price:'', fees:0, notes:'', timestamp:new Date().toISOString()};
+  let type = t.type, newCoin = null;
+  const coinOpts = Object.entries(DATA.coins).sort((a,b)=>a[1].name.localeCompare(b[1].name))
+    .map(([s,c]) => `<option value="${esc(s)}" ${s===t.coin?'selected':''}>${esc(c.name)} (${esc(c.symbol)})</option>`).join('');
+  const total0 = (t.quantity && t.price) ? +(t.quantity * t.price).toFixed(8) : '';
+  const m = modal(`<h2>${existing ? 'Edit transaction' : 'Add transaction'}</h2>
+    <p class="hint">Amounts in US dollars.</p>
+    <label>Coin</label>
+    <select class="field" id="coin">${existing?'':'<option value="">Choose a coin</option>'}${coinOpts}<option value="__new">+ A coin not in the list</option></select>
+    <div id="newcoin" class="hide"><input class="field" id="cq" placeholder="Search CoinGecko, e.g. Solana" style="margin-top:8px"><div class="results hide" id="cres"></div></div>
+    <label>Type</label>
+    <div class="seg" id="seg">${Object.entries(TYPE_LABEL).map(([k,v])=>`<button type="button" data-t="${k}" class="${k===type?'on':''}">${v}</button>`).join('')}</div>
+    <div class="row2"><div><label>Quantity</label><input class="field num" id="qty" inputmode="decimal" value="${esc(t.quantity)}"></div>
+      <div class="pricebox"><label>Price per coin <a class="up" href="#" id="nowpx" style="float:right">use live</a></label><input class="field num" id="px" inputmode="decimal" value="${esc(t.price ?? '')}"></div></div>
+    <div class="row2 pricebox"><div><label>Total (instead of price)</label><input class="field num" id="tot" inputmode="decimal" value="${esc(total0)}"></div>
+      <div><label>Fees</label><input class="field num" id="fees" inputmode="decimal" value="${esc(t.fees || 0)}"></div></div>
+    <label>Date and time</label><input class="field" id="dt" type="datetime-local" value="${localInputValue(new Date(t.timestamp))}">
+    <label>Notes</label><textarea class="field" id="notes" rows="3" placeholder="Where it's held, why, anything worth remembering">${esc(t.notes)}</textarea>
+    <div class="calc num" id="calc"></div>
+    <div class="err" id="ferr"></div>
+    <div class="mact"><button class="btn" id="cn">Cancel</button><button class="btn primary" id="ok">${existing ? 'Save changes' : 'Add'}</button></div>`);
+  const g = id => m.querySelector('#'+id);
+  const num = id => { const v = parseFloat(String(g(id).value).replace(/,/g,'')); return isNaN(v) ? null : v; };
+  const coinSlug = () => newCoin ? newCoin.slug : g('coin').value;
+  function setType(k){ type = k; m.querySelectorAll('#seg button').forEach(b => b.classList.toggle('on', b.dataset.t===k));
+    m.querySelectorAll('.pricebox').forEach(el => el.classList.toggle('hide', k.startsWith('transfer'))); calc(); }
+  function calc(){
+    const q = num('qty'), p = num('px'), f = num('fees') || 0;
+    const sym = newCoin ? newCoin.coin.symbol : (DATA.coins[coinSlug()]?.symbol || '');
+    let s = '';
+    if (q && type==='buy' && p != null) s = `Cost: ${fmtMoney(q*p + f)}`;
+    if (q && type==='sell' && p != null) s = `Proceeds: ${fmtMoney(q*p - f)}`;
+    if (q && type.startsWith('transfer')) s = `${type==='transfer_in'?'Adds':'Removes'} ${fmtQty(q)} ${esc(sym)}. No cost or profit is counted.`;
+    const S = compute(), r = S.rows[coinSlug()];
+    if (r && q && (type==='sell'||type==='transfer_out')) {
+      const have = r.qty + (existing && existing.coin===coinSlug() && (existing.type==='sell'||existing.type==='transfer_out') ? existing.quantity : 0) - (existing && existing.coin===coinSlug() && (existing.type==='buy'||existing.type==='transfer_in') ? existing.quantity : 0);
+      if (q > have + 1e-9) s += `<br><span style="color:var(--warn)">Holdings are only ${fmtQty(have)} ${esc(sym)}.</span>`;
+    }
+    g('calc').innerHTML = s;
+  }
+  m.querySelectorAll('#seg button').forEach(b => b.onclick = () => setType(b.dataset.t));
+  g('qty').oninput = () => { const q=num('qty'), p=num('px'); if (q && p!=null) g('tot').value = +(q*p).toFixed(8); calc(); };
+  g('px').oninput = () => { const q=num('qty'), p=num('px'); if (q && p!=null) g('tot').value = +(q*p).toFixed(8); calc(); };
+  g('tot').oninput = () => { const q=num('qty'), T=num('tot'); if (q && T!=null) g('px').value = +(T/q).toPrecision(10); calc(); };
+  g('fees').oninput = calc;
+  g('coin').onchange = () => { newCoin = null; g('newcoin').classList.toggle('hide', g('coin').value !== '__new'); calc(); };
+  g('nowpx').onclick = async e => { e.preventDefault();
+    const c = newCoin ? newCoin.coin : DATA.coins[coinSlug()]; if (!c || !c.apiId) { g('ferr').textContent = 'No live price for this coin.'; return; }
+    try { const j = await (await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${c.apiId}&vs_currencies=usd`)).json();
+      if (j[c.apiId]) { g('px').value = j[c.apiId].usd; g('px').oninput(); } } catch(err){ g('ferr').textContent = 'Could not get the live price. Type it in.'; } };
+  let st;
+  g('cq').oninput = () => { clearTimeout(st); st = setTimeout(async () => {
+    const q = g('cq').value.trim(); if (q.length < 2) { g('cres').classList.add('hide'); return; }
+    try {
+      const j = await (await fetch('https://api.coingecko.com/api/v3/search?query=' + encodeURIComponent(q))).json();
+      g('cres').innerHTML = j.coins.slice(0,10).map((c,i) => `<div data-i="${i}"><img src="${esc(c.thumb)}" alt=""><span>${esc(c.name)}</span><span class="muted">${esc(c.symbol)}</span></div>`).join('') || '<div class="muted">No match</div>';
+      g('cres').classList.remove('hide');
+      g('cres').querySelectorAll('[data-i]').forEach(el => el.onclick = () => {
+        const c = j.coins[+el.dataset.i];
+        const existingSlug = Object.keys(DATA.coins).find(s => DATA.coins[s].apiId === c.id);
+        if (existingSlug) { g('coin').value = existingSlug; g('newcoin').classList.add('hide'); newCoin = null; calc(); return; }
+        newCoin = {slug: c.id, coin: {apiId: c.id, symbol: String(c.symbol).toUpperCase(), name: c.name, image: c.large || c.thumb, lastPrice: null, lastPriceAt: null}};
+        g('cq').value = `${c.name} (${String(c.symbol).toUpperCase()})`; g('cres').classList.add('hide'); calc();
+      });
+    } catch(e){ g('cres').innerHTML = '<div class="muted">Search is busy, try again in a few seconds.</div>'; g('cres').classList.remove('hide'); }
+  }, 450); };
+  g('cn').onclick = closeModal;
+  g('ok').onclick = async () => {
+    const slug = coinSlug(), q = num('qty'), p = num('px'), f = num('fees') || 0, dt = g('dt').value;
+    const err = s => { g('ferr').textContent = s; };
+    if (!slug || slug === '__new') return err('Choose a coin.');
+    if (!q || q <= 0) return err('Enter a quantity above zero.');
+    if (!type.startsWith('transfer') && (p == null || p < 0)) return err('Enter the price per coin, or the total.');
+    if (!dt) return err('Enter the date and time.');
+    const trade = !type.startsWith('transfer');
+    const tx = {
+      id: existing ? existing.id : 'm' + Date.now().toString(36),
+      coin: slug, type, quantity: q, price: trade ? p : null, fees: trade ? f : 0,
+      cost: type==='buy' ? q*p + f : 0, proceeds: type==='sell' ? q*p - f : 0,
+      timestamp: new Date(dt).toISOString().replace('.000Z','Z'), notes: g('notes').value.trim(),
+      source: existing ? existing.source : 'manual'
+    };
+    const nd = JSON.parse(JSON.stringify(DATA));
+    if (newCoin) {
+      if (MARKET[newCoin.coin.apiId]) newCoin.coin.lastPrice = MARKET[newCoin.coin.apiId].p;
+      if (newCoin.coin.lastPrice == null && trade) newCoin.coin.lastPrice = p;
+      nd.coins[newCoin.slug] = newCoin.coin;
+    }
+    if (existing) nd.transactions = nd.transactions.map(x => x.id === existing.id ? tx : x);
+    else nd.transactions.push(tx);
+    nd.transactions.sort((a,b) => a.timestamp.localeCompare(b.timestamp));
+    const sym = nd.coins[slug].symbol;
+    g('ok').innerHTML = '<span class="spin"></span>';
+    try {
+      if (newCoin) { await loadPrices(true); }
+      await saveData(nd, `${existing?'Edit':'Add'} ${TYPE_LABEL[type].toLowerCase()} ${q} ${sym}`);
+      closeModal(); toast('Saved. Her link shows it within a minute or two.');
+    } catch(e){ g('ok').textContent = existing ? 'Save changes' : 'Add'; err(e.message); }
+  };
+  setType(type);
+}
+
+async function deleteTx(id){
+  const t = DATA.transactions.find(x => x.id === id); if (!t) return;
+  const c = DATA.coins[t.coin];
+  const ok = await confirmBox('Delete this transaction?', `${TYPE_LABEL[t.type]} ${fmtQty(t.quantity)} ${c.symbol} on ${fmtDate(t.timestamp)}. This cannot be undone here.`, 'Delete');
+  if (!ok) return;
+  const nd = JSON.parse(JSON.stringify(DATA));
+  nd.transactions = nd.transactions.filter(x => x.id !== id);
+  try { await saveData(nd, `Delete ${t.type} ${t.quantity} ${c.symbol}`); toast('Deleted.'); } catch(e){ toast(e.message, 5000); }
+}
+
+function openSettings(){
+  const m = modal(`<h2>Settings</h2><p class="hint">Only visible in manage mode.</p>
+    <label>Portfolio name</label><input class="field" id="nm" value="${esc(DATA.name)}">
+    <div class="mact" style="justify-content:flex-start"><button class="btn small" id="savename">Save name</button></div>
+    <label>Change passcode</label><p class="hint" style="margin:0 0 8px">Everyone will need the new one, including on devices that remembered the old one.</p>
+    <input class="field" id="np" type="password" placeholder="New passcode (8+ characters)" autocomplete="new-password">
+    <div class="mact" style="justify-content:flex-start"><button class="btn small" id="savepass">Change passcode</button></div>
+    <label>Backup</label>
+    <div class="mact" style="justify-content:flex-start;margin-top:0"><button class="btn small" id="backup">Download all transactions (JSON)</button><button class="btn small" id="csv">Download CSV</button></div>
+    <div class="err" id="serr"></div>
+    <div class="mact"><button class="btn" id="cn">Close</button></div>`);
+  const g = id => m.querySelector('#'+id);
+  g('cn').onclick = closeModal;
+  g('savename').onclick = async () => { const nd = JSON.parse(JSON.stringify(DATA)); nd.name = g('nm').value.trim() || CONFIG.title;
+    try { await saveData(nd, 'Rename portfolio'); toast('Name saved.'); } catch(e){ g('serr').textContent = e.message; } };
+  g('savepass').onclick = async () => {
+    const p = g('np').value; if (p.length < 8) { g('serr').textContent = 'Use at least 8 characters.'; return; }
+    const salt = b64(crypto.getRandomValues(new Uint8Array(16)));
+    const oldKey = KEY, oldFile = FILE;
+    try { KEY = await deriveKey(p, salt, FILE.iter); FILE = {...FILE, salt};
+      await saveData(JSON.parse(JSON.stringify(DATA)), 'Change passcode'); await rememberKey(KEY, salt); closeModal(); toast('Passcode changed. Send her the new one.', 5000);
+    } catch(e){ KEY = oldKey; FILE = oldFile; g('serr').textContent = e.message; }
+  };
+  const dl = (name, text, type) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text],{type})); a.download = name; a.click(); };
+  g('backup').onclick = () => dl('submariney-portfolio.json', JSON.stringify(DATA, null, 1), 'application/json');
+  g('csv').onclick = () => {
+    const q = v => `"${String(v ?? '').replace(/"/g,'""')}"`;
+    const lines = [['Date (UTC)','Coin','Symbol','Type','Quantity','Price USD','Fees USD','Cost USD','Proceeds USD','Notes'].join(',')];
+    for (const t of DATA.transactions) { const c = DATA.coins[t.coin]; lines.push([t.timestamp, c.name, c.symbol, TYPE_LABEL[t.type], t.quantity, t.price ?? '', t.fees, t.cost, t.proceeds, t.notes].map(q).join(',')); }
+    dl('submariney-portfolio.csv', lines.join('\n'), 'text/csv');
+  };
+}
+
+/* ---------- Events ---------- */
+document.addEventListener('click', async e => {
+  const el = e.target.closest('[data-act],[data-filter],[data-coin],[data-edit],[data-del],#refresh');
+  if (!el) return;
+  if (el.id === 'refresh') { el.innerHTML = '<span class="spin"></span>'; await loadPrices(true); render(); return; }
+  if (el.dataset.filter) { VIEW.filter = el.dataset.filter; render(); return; }
+  if (el.dataset.edit) { const t = DATA.transactions.find(x => x.id === el.dataset.edit); if (t) txForm(t); return; }
+  if (el.dataset.del) { deleteTx(el.dataset.del); return; }
+  const act = el.dataset.act;
+  if (act === 'add') { txForm(null, el.dataset.coin); return; }
+  if (act === 'settings') { openSettings(); return; }
+  if (act === 'lock') { LS.del('sp_key'); DATA = null; KEY = null; renderLock(); return; }
+  if (act === 'manage') { if (isAdmin()) { LS.del('sp_admin_token'); render(); toast('Manage mode is off on this device.'); } else openManageSetup(); return; }
+  if (el.tagName === 'TR' && el.dataset.coin) { location.hash = '#/coin/' + encodeURIComponent(el.dataset.coin); }
+});
+document.addEventListener('input', e => { if (e.target.id === 'q') { VIEW.q = e.target.value; render(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+window.addEventListener('hashchange', () => { render(); window.scrollTo(0,0); });
+
+/* ---------- Start ---------- */
+let timer = null;
+async function start(){
+  render();
+  await loadPrices(false); render();
+  clearInterval(timer);
+  timer = setInterval(async () => { if (document.visibilityState === 'visible' && !$('#modal')) { await loadPrices(false); render(); } }, PRICE_TTL);
+}
+(async function boot(){
+  $('#app').innerHTML = '<div class="lock"><span class="spin"></span></div>';
+  try { FILE = await fetchFile(); } catch(e){ $('#app').innerHTML = `<div class="lock"><p class="muted">Could not load the portfolio. Check your connection and refresh.</p></div>`; return; }
+  const key = await storedKey(FILE.salt);
+  if (key) { try { DATA = await decryptWith(key, FILE); KEY = key; return start(); } catch(e){ LS.del('sp_key'); } }
+  renderLock();
+})();
+</script>
+</body>
+</html>
